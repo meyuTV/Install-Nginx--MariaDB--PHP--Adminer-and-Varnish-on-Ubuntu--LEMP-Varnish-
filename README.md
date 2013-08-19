@@ -47,10 +47,7 @@ Install Varnish
 sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add -
 ```
 ```bash
-sudo nano /etc/apt/sources.list
-```
-```text
-deb http://repo.varnish-cache.org/ubuntu/ lucid varnish-3.0
+echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list
 ```
 ```bash
 sudo apt-get update && sudo apt-get install varnish
@@ -59,6 +56,10 @@ sudo apt-get update && sudo apt-get install varnish
 sudo nano /etc/default/varnish
 ```
 ```text
+START=no
+NFILES=131072
+MEMLOCK=82000
+
 DAEMON_OPTS="-a :80 \
              -T localhost:6082 \
              -f /etc/varnish/default.vcl \
