@@ -42,4 +42,43 @@ sudo mv latest.php adminer.php
 ```
 http://10.10.10.10/adminer
 
+Install Varnish
+```bash
+sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add -
+```
+```bash
+sudo nano /etc/apt/sources.list
+```
+```text
+deb http://repo.varnish-cache.org/ubuntu/ lucid varnish-3.0
+```
+```bash
+sudo apt-get update && sudo apt-get install varnish
+```
+```bash
+sudo nano /etc/default/varnish
+```
+```text
+DAEMON_OPTS="-a :80 \
+             -T localhost:6082 \
+             -f /etc/varnish/default.vcl \
+             -S /etc/varnish/secret \
+             -s malloc,256m"
+```
+```bash
+sudo nano /etc/nginx/sites-available/default
+```
+```text
+[...]
+server {
+        listen  127.0.0.1:8080; ## listen for ipv4; this line is default and implied
+        [...]
+```
+```bash
+sudo service nginx restart && sudo service varnish restart
+```
+
+
+
+
 [Adminer - Database management in single PHP file](http://www.adminer.org/)
