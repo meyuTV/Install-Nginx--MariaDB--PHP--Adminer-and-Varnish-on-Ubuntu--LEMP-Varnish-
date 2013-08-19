@@ -34,12 +34,12 @@ sudo nano /usr/share/nginx/www/info.php
 sudo service nginx restart
 
 
-sudo apt-get install phpmyadmin
-sudo ln -s /usr/share/phpmyadmin/ /usr/share/nginx/www
+INSTALL ADMINER
+```bash
+cd /usr/share/nginx/www &&
+sudo wget http://www.adminer.org/latest.php && 
+sudo mv latest.php adminer.php
+```
+http://10.10.10.10/adminer
 
-
-
-https://www.digitalocean.com/community/articles/how-to-install-phpmyadmin-on-a-lemp-server
-sudo service nginx restart
-
-
+[Adminer - Database management in single PHP file](http://www.adminer.org/)
