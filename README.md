@@ -1,7 +1,7 @@
 Build-up-Drupal-on-Ubuntu--LEMP-Drush-Sytle-
 ============================================
 
-於 Ubuntu 上架設 Drupal (LEMP 架構 + Drush 工具)
+於 Ubuntu 上架設 Drupal (LEMP 架構)
 
 
 sudo apt-get install python-software-properties && 
@@ -44,22 +44,14 @@ http://10.10.10.10/adminer
 
 Install Varnish
 ```bash
-sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add -
-```
-```bash
-echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list
-```
-```bash
+sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add - && 
+echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list && 
 sudo apt-get update && sudo apt-get install varnish
 ```
 ```bash
 sudo nano /etc/default/varnish
 ```
 ```text
-START=no
-NFILES=131072
-MEMLOCK=82000
-
 DAEMON_OPTS="-a :80 \
              -T localhost:6082 \
              -f /etc/varnish/default.vcl \
