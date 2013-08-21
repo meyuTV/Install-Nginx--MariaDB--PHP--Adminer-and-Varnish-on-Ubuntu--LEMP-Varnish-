@@ -8,7 +8,7 @@
 Ubuntu Server 12.04  
 Nginx 1.5.3  
 MariaDB 5.5.32  
-PHP 5.5.2 
+PHP 5.3.10 
 Adminer 3.7.1  
 Varnish 3.0.4   
 
@@ -25,7 +25,7 @@ sudo apt-get update &&
 sudo apt-get install mariadb-server libapache2-mod-auth-mysql php5-mysql
 ```
 安裝過程中，請設定資料庫的最高權限使用者 root 的密碼。(本文使用 <code>root.password</code>)  
-![Set Password for MariaDB root](https://lh5.googleusercontent.com/-FA1tujVUiDI/UhTDNnFiJYI/AAAAAAAAf8w/z-eoN762eZ0/w826-h551-no/Set+Password+for+MariaDB+root.png)
+![Set Password for MariaDB root](https://lh5.googleusercontent.com/-FA1tujVUiDI/UhTDNnFiJYI/AAAAAAAAf8w/z-eoN762eZ0/w826-h551-no/Set+Password+for+MariaDB+root.png)  
 接著，請進行安全性設定：
 ```bash
 sudo /usr/bin/mysql_secure_installation
@@ -74,7 +74,7 @@ cgi.fix_pathinfo=0
 ```bash
 sudo nano /etc/php5/fpm/pool.d/www.conf
 ```
-找到 <code>listen = 127.0.0.1:9000</cdoe> 這行，並將其改為：
+找到 <code>listen = 127.0.0.1:9000</code> 這行，並將其改為：
 ```text
 listen = /var/run/php5-fpm.sock
 ```
@@ -91,15 +91,14 @@ sudo nano /etc/nginx/sites-available/default
 ```
 於 <code>Server {}</code> 段落中進行以下修改：
 * 在 <code>index index.html index.htm;</code> 那行中增加 <code>index.php</code> 
-* 主機如有特定域名 (Domain Name) 或 IP，可將 <code>server_name localhost;</code> 中的 <code>localhost</code> 替換為域名或 IP。 
+* 網頁伺服器如有特定域名 (Domain Name) 或 IP，可將 <code>server_name localhost;</code> 中的 <code>localhost</code> 替換為域名或 IP。 
 * 取消 <code>location ~ \.php$ {}</code> 段落的井字註解符號
-段落 <code>Server {}</code> 修改後，將類似：
 
+段落 <code>Server {}</code> 修改後，將類似：
 ```text
  [...]
 server {
         listen   80;
-     
 
         root /usr/share/nginx/www;
         index index.php index.html index.htm;
@@ -125,39 +124,58 @@ server {
                 fastcgi_index index.php;
                 fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
                 include fastcgi_params;
-                
         }
-
 }
 [...]
 ```
-
-
-sudo nano /etc/nginx/sites-available/default
-
-
-sudo nano /usr/share/nginx/www/info.php
-
+儲存後退出，並重新啟動 Nginx：
+```bash
 sudo service nginx restart
+```
 
+### 測試運作情況
+請製作一 PHP 檔：
+```bash
+sudo nano /usr/share/nginx/www/info.php
+```
+內容填上：
+```text
+<?php
+phpinfo();
+?>
+```
+儲存後退出，並使用瀏覽器查看您的網頁伺服器，並後綴 URL <code>/info.php</code>。  
+(您的網址看起來會類似 http://10.10.10.10/info.php 或 http://example.com/info.php)
+出現類似畫面，即代表運作正常：  
+![PHP info.php](https://lh6.googleusercontent.com/-wKg6_Oj6tD4/UhTX8RxKh_I/AAAAAAAAf9M/ApyTgXdV_KE/w826-h801-no/PHP+info.php.png)  
+如出現錯誤畫面，請再參考一次 Nginx 及 PHP 的設定步驟。
 
-INSTALL ADMINER
+###安裝 Adminer
+請輸入以下指令，以下載並安裝 Adminer：
 ```bash
 cd /usr/share/nginx/www &&
 sudo wget http://www.adminer.org/latest.php && 
 sudo mv latest.php adminer.php
 ```
-http://10.10.10.10/adminer
+使用瀏覽器查看您的網頁伺服器，並後綴 URL <code>/adminer.php</code>。  
+(您的網址看起來會類似 http://10.10.10.10/adminer.php 或 http://example.com/adminer.php)
+出現類似畫面，即代表運作正常:  
+![Adminer Login](https://lh5.googleusercontent.com/-w5QfUEM4RVQ/UhTa9G4DZJI/AAAAAAAAf9k/qKebzhrVhQI/w655-h374-no/adminer.png)  
 
-Install Varnish
+###安裝 Varnish
+請輸入以下指令，以添加 Varnish 的套件來源，並安裝之：
 ```bash
 sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add - && 
 echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list && 
 sudo apt-get update && sudo apt-get install varnish
 ```
+
+###設定 Varnish 與 Nginx
+編輯其 <code>/etc/default/varnish</code>，使 Varnish 前端監聽 Port 80，做為 HTTP 的預設窗口：
 ```bash
 sudo nano /etc/default/varnish
 ```
+在 Alternative 2 的段落中，修改 <code>DAEMON_OPTS</code> 的 -a 參數，由 <code>6081</code> 改為 <code>80</code>：
 ```text
 DAEMON_OPTS="-a :80 \
              -T localhost:6082 \
@@ -165,35 +183,34 @@ DAEMON_OPTS="-a :80 \
              -S /etc/varnish/secret \
              -s malloc,256m"
 ```
+儲存後退出。  
+查看 <code>/etc/varnish/default.vcl</code> 的 <code>backend default {}</code> 段落，可知 Varnish 的後端監聽 Port 8080；  
+為使 Nginx 能與 Varnish 合作，請再次編輯 <code>/etc/nginx/sites-available/default</code>，使 Nginx 的前端監聽 Port 8080：
 ```bash
 sudo nano /etc/nginx/sites-available/default
 ```
+將 <code>Server {}</code> 段落中首行的 <code>listen 80</code> 改為 <code>8080</code>：
 ```text
-[...]
-server {
-        listen  127.0.0.1:8080; ## listen for ipv4; this line is default and implied
-        [...]
+ listen  127.0.0.1:8080; ## listen for ipv4; this line is default and implied
 ```
+儲存後退出，並重新啟動 Nginx 及 Varnish。
 ```bash
 sudo service nginx restart && sudo service varnish restart
 ```
-
-
-
-
-
-
-
+  
 DONE.
 <br>
 <br>
 
 補充說明
 =
-* 
+* 安全考量下，如您不需要透過網頁介面管理資料庫時，建議移除 Adminer：<code>sudo rm /usr/share/nginx/www/adminer.php</code>
 
 參考資源
 =
 * [MariaDB](https://mariadb.org/)
 * [Adminer - Database management in single PHP file](http://www.adminer.org/)
+* [Installation on Ubuntu | Varnish Community](https://www.varnish-cache.org/installation/ubuntu)
+* [Installation | TuxLite](https://tuxlite.com/installation/)
 * [How to Install Linux, nginx, MySQL, PHP (LEMP) stack on Ubuntu 12.04 | DigitalOcean](https://www.digitalocean.com/community/articles/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-12-04)
+* [How to Install Wordpress, Nginx, PHP, and Varnish on Ubuntu 12.04 | DigitalOcean](https://www.digitalocean.com/community/articles/how-to-install-wordpress-nginx-php-and-varnish-on-ubuntu-12-04)
