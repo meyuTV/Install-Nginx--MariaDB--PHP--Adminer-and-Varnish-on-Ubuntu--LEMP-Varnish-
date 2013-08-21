@@ -1,7 +1,32 @@
-Build-up-Drupal-on-Ubuntu--LEMP-Drush-Sytle-
-============================================
+所為何來
+=
+於 Ubuntu 上安裝 Nignx 做為網站伺服器，搭配 MariaDB 資料庫及 PHP 指令碼語言。
 
-於 Ubuntu 上架設 Drupal (LEMP 架構)
+
+使用環境
+=
+Ubuntu Server 12.04  
+Nginx  
+MariaDB 5.5.32  
+PHP  
+Adminer 3.7.1  
+
+安裝方式
+=
+```bash
+```
+DONE.
+<br>
+<br>
+
+補充說明
+=
+* 
+
+參考資源
+=
+* [](http://)
+* [](http://)
 
 
 sudo apt-get install python-software-properties && 
