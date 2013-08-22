@@ -212,9 +212,8 @@ DONE.
 * 資料庫系統密碼 <code>root.password</code>
 
 ###相關設定檔
-* PHP：<code>/etc/php5/fpm/php.ini</code>
-* PHP-FPM：<code>/etc/php5/fpm/pool.d/www.conf</code>
-* Nginx：<code>/etc/nginx/sites-available/default</code>
+* PHP：<code>/etc/php5/fpm/php.ini</code> 及 <code>/etc/php5/fpm/pool.d/www.conf</code> 及 <code>/etc/php5/fpm/pool.d/user.conf</code>
+* Nginx：<code>/etc/nginx/sites-available/default</code> 及 <code>/etc/nginx/nginx.conf</code>
 * Varnish：<code>/etc/default/varnish</code> 及 <code>/etc/varnish/default.vcl</code>
 
 ###基本資安補強  
