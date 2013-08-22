@@ -46,7 +46,6 @@ Remove test database and access to it? [Y/n] y
 Reload privilege tables now? [Y/n] y
 ```
   
-  
 ###安裝 Nginx
 請輸入：
 ```bash
