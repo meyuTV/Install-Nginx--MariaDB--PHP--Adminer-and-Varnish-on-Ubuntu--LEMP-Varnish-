@@ -9,7 +9,7 @@
 作業系統：Ubuntu Server 12.04  
 網頁伺服器：Nginx 1.5.3  
 資料庫系統：MariaDB 5.5.32  
-指令碼語言：PHP 5.3.10 
+指令碼語言：PHP 5.3.10  
 資料庫管理介面：Adminer 3.7.1  
 反向快取伺服器：Varnish 3.0.4   
 
@@ -45,6 +45,7 @@ Disallow root login remotely? [Y/n] y
 Remove test database and access to it? [Y/n] y
 Reload privilege tables now? [Y/n] y
 ```
+  
   
 ###安裝 Nginx
 請輸入：
