@@ -54,8 +54,7 @@ sudo service nginx start
 sudo apt-get install php5-fpm &&  
 sudo nano /etc/php5/fpm/php.ini
 ```
-找到 <code>;cgi.fix_pathinfo=1</code> 這行，將 1 改為 0：  
-(記得要刪除句首的分號，以取消其註解狀態)
+找到 <code>;cgi.fix_pathinfo=1</code> 這行，將 1 改為 0：(記得要刪除句首的分號，以取消其註解狀態)
 ```text
 cgi.fix_pathinfo=0
 ```
@@ -120,9 +119,9 @@ server {
 ```bash
 sudo service nginx restart
 ```
-
+  
 ### 測試運作情況
-請製作一 PHP 檔：
+請製作一 info.php 檔，內含顯示 PHP 運作資訊的指令：
 ```bash
 sudo nano /usr/share/nginx/www/info.php
 ```
