@@ -219,7 +219,7 @@ DONE.
 
 ###基本資安補強  
 
-* 安全考量下，如您不需要透過網頁介面管理資料庫時，建議移除 Adminer：
+* 安全考量下，如您不需要透過網頁介面管理資料庫時，建議移除 Adminer：  
 
 ```bash
 sudo rm /usr/share/nginx/www/adminer.php
