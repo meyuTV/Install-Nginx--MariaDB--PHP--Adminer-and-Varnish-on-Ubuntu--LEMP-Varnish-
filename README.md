@@ -1,20 +1,25 @@
 所為何來
 =
-於 Ubuntu 上安裝 Nignx 做為網站伺服器，搭配 MariaDB 資料庫及 PHP 指令碼語言 (即 LEMP 架構)，並以 Adminer 做為資料庫管理工具，再另外加裝 Varnish 反向網站快取伺服器 (HTTP 加速器的一種)。本文將列出相對簡易之安裝步驟，供需求者參考。
-
-使用環境
+於 Ubuntu 上安裝 Nignx 做為網站伺服器，搭配 MariaDB 資料庫及 PHP 指令碼語言 (即 LEMP 架構)，並以 Adminer 做為網頁資料庫管理工具，再另外加裝 Varnish 反向網站快取伺服器 (HTTP 加速器的一種)。本文將列出相對簡易之安裝步驟，供需求者參考。
+  
+本文 Ubuntu 的環境設定及帳號權限依存於[此文](https://github.com/meyu/Initial-Ubuntu-HTTP-Server)，也請參考。
+  
+適用環境
 =
-Ubuntu Server 12.04  
-Nginx 1.5.3  
-MariaDB 5.5.32  
-PHP 5.3.10 
-Adminer 3.7.1  
-Varnish 3.0.4   
+作業系統：Ubuntu Server 12.04  
+網頁伺服器：Nginx 1.5.3  
+資料庫系統：MariaDB 5.5.32  
+指令碼語言：PHP 5.3.10 
+資料庫管理介面：Adminer 3.7.1  
+反向快取伺服器：Varnish 3.0.4   
 
 安裝方式
 =
 ###安裝 MariaDB
-登入 Ubuntu 後，於終端機中輸入以下指令，以下載及安裝 MariaDB 和相關套件：  
+登入 Ubuntu。  
+(本文使用 <code>web.admin</code> 登入，為網站管理者的專用身份，具有可使用 sudo 的權限)
+  
+於終端機中輸入以下指令，以下載及安裝 MariaDB 和相關套件：  
 (本文安裝的版本為 5.5，欲選擇其它版本者，可至 [MariaDB 官網](https://downloads.mariadb.org/mariadb/repositories/) 取得下載指令，並替代以下指令的前三行)
 ```bash
 sudo apt-get install python-software-properties && 
@@ -58,7 +63,7 @@ sudo nano /etc/php5/fpm/php.ini
 ```text
 cgi.fix_pathinfo=0
 ```
-儲存後退出。接著請更改 php5-fpm 的設定：
+儲存後退出。接著請更改 PHP-FPM 的設定：
 ```bash
 sudo nano /etc/php5/fpm/pool.d/www.conf
 ```
@@ -115,28 +120,31 @@ server {
 }
 [...]
 ```
+另請記得，/usr/share/nginx/www 為 Nginx 放置網站資料的位置；但因 Ubuntu 版本差異，亦有可能會設定為 /usr/share/nginx/html，故請自行前往 /usr/share/nginx 資料夾查看，並依實際情況修改上文所有之 /usr/share/nginx/www 設定。  
 儲存後退出，並重新啟動 Nginx：
 ```bash
 sudo service nginx restart
+```
+將 /usr/share/nginx/www 的使用權限分配予網站管理者：  
+(本文的管理者為 <code>web.admin</code>)
+```bash
+sudo chown -R web.admin:web.admin /usr/share/nginx/www && 
+chmod -R 775 /usr/share/nginx/www
 ```
   
 ### 測試運作情況
 請製作一 info.php 檔，內含顯示 PHP 運作資訊的指令：
 ```bash
-sudo nano /usr/share/nginx/www/info.php
-```
-內容填上：
-```text
+sudo cat <<EOF>/usr/share/nginx/www/info.php
 <?php
 phpinfo();
 ?>
+EOF
 ```
-儲存後退出，並使用瀏覽器查看您的網頁伺服器，並後綴 URL <code>/info.php</code>。  
-(您的網址看起來會類似 http://10.10.10.10/info.php 或 http://example.com/info.php)
-出現類似畫面，即代表運作正常：  
-![PHP info.php](https://lh6.googleusercontent.com/-wKg6_Oj6tD4/UhTX8RxKh_I/AAAAAAAAf9M/ApyTgXdV_KE/w826-h801-no/PHP+info.php.png)  
-如出現錯誤畫面，請再參考一次 Nginx 及 PHP 的設定步驟。
-
+使用瀏覽器查看您的網頁伺服器，並後綴 URL <code>/info.php</code>。  
+(您的網址看起來會類似 http://10.10.10.10/info.php 或 http://example.com/info.php)  
+若有秀出各類 PHP 資訊，即代表運作正常；如出現錯誤畫面，請再參考一次 Nginx 及 PHP 的設定步驟。
+  
 ###安裝 Adminer
 請輸入以下指令，以下載並安裝 Adminer：
 ```bash
@@ -144,11 +152,9 @@ cd /usr/share/nginx/www &&
 sudo wget http://www.adminer.org/latest.php && 
 sudo mv latest.php adminer.php
 ```
-使用瀏覽器查看您的網頁伺服器，並後綴 URL <code>/adminer.php</code>。  
-(您的網址看起來會類似 http://10.10.10.10/adminer.php 或 http://example.com/adminer.php)
-出現類似畫面，即代表運作正常:  
-![Adminer Login](https://lh5.googleusercontent.com/-w5QfUEM4RVQ/UhTa9G4DZJI/AAAAAAAAf9k/qKebzhrVhQI/w655-h374-no/adminer.png)  
-
+欲使用 Adminer 時，以瀏覽器查看您的網頁伺服器，並後綴 URL <code>/adminer.php</code>。     
+(您的網址看起來會類似 http://10.10.10.10/adminer.php 或 http://example.com/adminer.php)  
+  
 ###安裝 Varnish
 請輸入以下指令，以添加 Varnish 的套件來源，並安裝之：
 ```bash
@@ -156,13 +162,13 @@ sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add - 
 echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list && 
 sudo apt-get update && sudo apt-get install varnish
 ```
-
+  
 ###設定 Varnish 與 Nginx
 編輯其 <code>/etc/default/varnish</code>，使 Varnish 前端監聽 Port 80，做為 HTTP 的預設窗口：
 ```bash
 sudo nano /etc/default/varnish
 ```
-在 Alternative 2 的段落中，修改 <code>DAEMON_OPTS</code> 的 -a 參數，由 <code>6081</code> 改為 <code>80</code>：
+在 Alternative 2 的段落中，修改 DAEMON_OPTS 的 -a 參數，由 <code>6081</code> 改為 <code>80</code>：
 ```text
 DAEMON_OPTS="-a :80 \
              -T localhost:6082 \
@@ -171,14 +177,14 @@ DAEMON_OPTS="-a :80 \
              -s malloc,256m"
 ```
 儲存後退出。  
-查看 <code>/etc/varnish/default.vcl</code> 的 <code>backend default {}</code> 段落，可知 Varnish 的後端監聽 Port 8080；  
-為使 Nginx 能與 Varnish 合作，請再次編輯 <code>/etc/nginx/sites-available/default</code>，使 Nginx 的前端監聽 Port 8080：
+查看 /etc/varnish/default.vcl 的 backend default {} 段落，可知 Varnish 的後端監聽 Port 8080；  
+為使 Nginx 能與 Varnish 合作，請再次編輯 /etc/nginx/sites-available/default，使 Nginx 的前端監聽 Port 8080：
 ```bash
 sudo nano /etc/nginx/sites-available/default
 ```
-將 <code>Server {}</code> 段落中首行的 <code>listen 80</code> 改為 <code>8080</code>：
+將 Server {} 段落中首行的 <code>listen 80;</code> 改為 <code>listen 8080;</code>：
 ```text
- listen  127.0.0.1:8080; ## listen for ipv4; this line is default and implied
+ listen  8080; ## listen for ipv4; this line is default and implied
 ```
 儲存後退出，並重新啟動 Nginx 及 Varnish。
 ```bash
@@ -191,6 +197,28 @@ DONE.
 
 補充說明
 =
+###本文網站設定資訊
+
+* 網站資料：<code>/usr/share/nginx/www/</code>
+* 管理者：<code>web.admin</code>
+* 密碼：<code>web.password</code>
+* 本機網址：[http://localhost/](http://localhost/)
+* 本機測試：[http://localhost/info.php](http://localhost/info.php)
+
+###本文資料庫設定
+
+* 網頁管理介面入口：[http://localhost/adminer.php](http://localhost/adminer.php)
+* 資料庫系統管理者 <code>root</code>
+* 資料庫系統密碼 <code>root.password</code>
+
+###相關設定檔
+* PHP：<code>/etc/php5/fpm/php.ini</code>
+* PHP-FPM：<code>/etc/php5/fpm/pool.d/www.conf</code>
+* Nginx：<code>/etc/nginx/sites-available/default</code>
+* Varnish：<code>/etc/default/varnish</code> 及 <code>/etc/varnish/default.vcl</code>
+
+###基本資安補強  
+
 * 安全考量下，如您不需要透過網頁介面管理資料庫時，建議移除 Adminer：<code>sudo rm /usr/share/nginx/www/adminer.php</code>
 
 參考資源
