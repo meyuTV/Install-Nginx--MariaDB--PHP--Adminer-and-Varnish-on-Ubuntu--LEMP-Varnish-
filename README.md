@@ -79,8 +79,8 @@ sudo nano /etc/nginx/sites-available/default
 ```
 於 Server {} 段落中進行以下修改：
 * 在 <code>index index.html index.htm;</code> 那行中增加 <code>index.php</code> 
-* 若有特定域名或 IP，可將修改 <code>server_name localhost;</code> 指向域名或 IP
-* 取消 <code>location ~ \.php$ {}</code> 段落的井字註解符號，並增加一行 <code>fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</code>
+* 可將 <code>server_name localhost;</code> 的 localhost 修改為特定域名或 IP
+* 取消 <code>location ~ \.php$ {}</code> 段落的井字註解符號，並於其中增加一行 <code>fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</code>
 
 段落 <code>Server {}</code> 修改後，將類似：
 ```text
