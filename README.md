@@ -45,14 +45,14 @@ Disallow root login remotely? [Y/n] y
 Remove test database and access to it? [Y/n] y
 Reload privilege tables now? [Y/n] y
 ```
-  
+   
 ###安裝 Nginx
 請輸入：
 ```bash
 sudo apt-get install nginx &&
 sudo service nginx start 
 ```
-  
+   
 ###安裝 PHP
 請輸入以下指令，以安裝PHP，並編輯其設定，以提高安全性：
 ```bash
@@ -75,7 +75,7 @@ listen = /var/run/php5-fpm.sock
 ```bash
 sudo service php5-fpm restart
 ```
-  
+   
 ###設定 Nginx
 請開啟 Nginx 的預設檔：
 ```bash
@@ -131,7 +131,7 @@ sudo service nginx restart
 sudo chown -R web.admin:web.admin /usr/share/nginx/www && 
 chmod -R 775 /usr/share/nginx/www
 ```
-  
+   
 ### 測試運作情況
 請製作一 info.php 檔，內含顯示 PHP 運作資訊的指令：
 ```bash
@@ -144,7 +144,7 @@ EOF
 使用瀏覽器查看您的網頁伺服器，並後綴 URL <code>/info.php</code>。  
 (您的網址看起來會類似 http://10.10.10.10/info.php 或 http://example.com/info.php)  
 若有秀出各類 PHP 資訊，即代表運作正常；如出現錯誤畫面，請再參考一次 Nginx 及 PHP 的設定步驟。
-  
+   
 ###安裝 Adminer
 請輸入以下指令，以下載並安裝 Adminer：
 ```bash
@@ -154,7 +154,7 @@ sudo mv latest.php adminer.php
 ```
 欲使用 Adminer 時，以瀏覽器查看您的網頁伺服器，並後綴 URL <code>/adminer.php</code>。     
 (您的網址看起來會類似 http://10.10.10.10/adminer.php 或 http://example.com/adminer.php)  
-  
+   
 ###安裝 Varnish
 請輸入以下指令，以添加 Varnish 的套件來源，並安裝之：
 ```bash
@@ -162,7 +162,7 @@ sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add - 
 echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list && 
 sudo apt-get update && sudo apt-get install varnish
 ```
-  
+   
 ###設定 Varnish 與 Nginx
 編輯其 <code>/etc/default/varnish</code>，使 Varnish 前端監聽 Port 80，做為 HTTP 的預設窗口：
 ```bash
@@ -186,11 +186,15 @@ sudo nano /etc/nginx/sites-available/default
 ```text
  listen  8080; ## listen for ipv4; this line is default and implied
 ```
-儲存後退出，並重新啟動 Nginx 及 Varnish。
+儲存後退出。這時，可先檢查 Nginx 的設定檔語法：
+```bash
+sudo nginx -t
+```
+重新啟動 Nginx 及 Varnish。
 ```bash
 sudo service nginx restart && sudo service varnish restart
 ```
-  
+   
 DONE.
 <br>
 <br>
@@ -231,3 +235,4 @@ sudo rm /usr/share/nginx/www/adminer.php
 * [Installation | TuxLite](https://tuxlite.com/installation/)
 * [How to Install Linux, nginx, MySQL, PHP (LEMP) stack on Ubuntu 12.04 | DigitalOcean](https://www.digitalocean.com/community/articles/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-12-04)
 * [How to Install Wordpress, Nginx, PHP, and Varnish on Ubuntu 12.04 | DigitalOcean](https://www.digitalocean.com/community/articles/how-to-install-wordpress-nginx-php-and-varnish-on-ubuntu-12-04)
+* [Pantheon | Varnish caching for high performance](http://helpdesk.getpantheon.com/customer/portal/articles/425726)
