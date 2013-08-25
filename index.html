@@ -256,7 +256,12 @@ sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install varni
 <div class="highlight"><pre> listen  8080; ## listen for ipv4; this line is default and implied
 </pre></div>
 
-<p>儲存後退出，並重新啟動 Nginx 及 Varnish。</p>
+<p>儲存後退出。這時，可先檢查 Nginx 的設定檔語法：</p>
+
+<div class="highlight"><pre>sudo nginx -t
+</pre></div>
+
+<p>重新啟動 Nginx 及 Varnish。</p>
 
 <div class="highlight"><pre>sudo service nginx restart <span class="o">&amp;&amp;</span> sudo service varnish restart
 </pre></div>
@@ -295,11 +300,9 @@ sudo apt-get update <span class="o">&amp;&amp;</span> sudo apt-get install varni
 <a name="%E7%9B%B8%E9%97%9C%E8%A8%AD%E5%AE%9A%E6%AA%94" class="anchor" href="#%E7%9B%B8%E9%97%9C%E8%A8%AD%E5%AE%9A%E6%AA%94"><span class="octicon octicon-link"></span></a>相關設定檔</h3>
 
 <ul>
-<li>PHP：<code>/etc/php5/fpm/php.ini</code>
+<li>PHP：<code>/etc/php5/fpm/php.ini</code> 及 <code>/etc/php5/fpm/pool.d/<a href="http://www.conf">www.conf</a></code> 及 <code>/etc/php5/fpm/pool.d/user.conf</code>
 </li>
-<li>PHP-FPM：<code>/etc/php5/fpm/pool.d/<a href="http://www.conf">www.conf</a></code>
-</li>
-<li>Nginx：<code>/etc/nginx/sites-available/default</code>
+<li>Nginx：<code>/etc/nginx/sites-available/default</code> 及 <code>/etc/nginx/nginx.conf</code>
 </li>
 <li>Varnish：<code>/etc/default/varnish</code> 及 <code>/etc/varnish/default.vcl</code>
 </li>
@@ -321,6 +324,7 @@ sudo rm /usr/share/nginx/www/adminer.php
 <li><a href="https://tuxlite.com/installation/">Installation | TuxLite</a></li>
 <li><a href="https://www.digitalocean.com/community/articles/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-12-04">How to Install Linux, nginx, MySQL, PHP (LEMP) stack on Ubuntu 12.04 | DigitalOcean</a></li>
 <li><a href="https://www.digitalocean.com/community/articles/how-to-install-wordpress-nginx-php-and-varnish-on-ubuntu-12-04">How to Install Wordpress, Nginx, PHP, and Varnish on Ubuntu 12.04 | DigitalOcean</a></li>
+<li><a href="http://helpdesk.getpantheon.com/customer/portal/articles/425726">Pantheon | Varnish caching for high performance</a></li>
 </ul>
       </section>
     </div>
