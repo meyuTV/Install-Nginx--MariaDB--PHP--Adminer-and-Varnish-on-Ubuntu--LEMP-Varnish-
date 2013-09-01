@@ -40,6 +40,7 @@ Enter current password for root (enter for none):
 詢問是否要更換 root 的密碼時，請選 n；再來是幾項安全性的選擇，建議都選擇 y：  
 (移除匿名登入、關閉root遠端登入、移除test資料庫、立刻套用設定)
 ```text
+Change the root password? [Y/n] n
 Remove anonymous users? [Y/n] y                                            
 Disallow root login remotely? [Y/n] y
 Remove test database and access to it? [Y/n] y
