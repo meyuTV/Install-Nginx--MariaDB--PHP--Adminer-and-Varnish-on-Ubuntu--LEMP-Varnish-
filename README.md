@@ -50,14 +50,14 @@ Reload privilege tables now? [Y/n] y
 ###安裝 Nginx
 請輸入：
 ```bash
-sudo apt-get install nginx &&
+sudo aptitude install nginx &&
 sudo service nginx start 
 ```
    
 ###安裝 PHP
 請輸入以下指令，以安裝PHP，並編輯其設定，以提高安全性：
 ```bash
-sudo apt-get install php5-fpm &&  
+sudo aptitude install php5-fpm &&  
 sudo nano /etc/php5/fpm/php.ini
 ```
 找到 <code>;cgi.fix_pathinfo=1</code> 這行，將 1 改為 0：(記得要刪除句首的分號，以取消其註解狀態)
@@ -161,7 +161,7 @@ sudo mv latest.php adminer.php
 ```bash
 sudo curl http://repo.varnish-cache.org/debian/GPG-key.txt | sudo apt-key add - && 
 echo "deb http://repo.varnish-cache.org/ubuntu/ precise varnish-3.0" | sudo tee -a /etc/apt/sources.list && 
-sudo apt-get update && sudo apt-get install varnish
+sudo aptitude update && sudo aptitude install varnish
 ```
    
 ###設定 Varnish 與 Nginx
