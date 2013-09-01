@@ -17,7 +17,7 @@
 =
 ###安裝 MariaDB
 登入 Ubuntu。  
-(本文使用 <code>web.admin</code> 登入，為網站管理者的專用身份，具有可使用 sudo 的權限)
+(本文使用 <code>WebAdmin</code> 登入，為網站管理者的專用身份，具有可使用 sudo 的權限)
   
 於終端機中輸入以下指令，以下載及安裝 MariaDB 和相關套件：  
 (本文安裝的版本為 5.5，欲選擇其它版本者，可至 [MariaDB 官網](https://downloads.mariadb.org/mariadb/repositories/) 取得下載指令，並替代以下指令的前三行)
@@ -126,9 +126,9 @@ server {
 sudo service nginx restart
 ```
 將 /usr/share/nginx/www 的使用權限分配予網站管理者：  
-(本文的管理者為 <code>web.admin</code>)
+(本文的管理者為 <code>WebAdmin</code>)
 ```bash
-sudo chown -R web.admin:web.admin /usr/share/nginx/www && 
+sudo chown -R WebAdmin:WebAdmin /usr/share/nginx/www && 
 chmod -R 775 /usr/share/nginx/www
 ```
    
@@ -204,7 +204,7 @@ DONE.
 ###本文網站設定資訊
 
 * 網站資料：<code>/usr/share/nginx/www/</code>
-* 管理者：<code>web.admin</code>
+* 管理者：<code>WebAdmin</code>
 * 密碼：<code>web.password</code>
 * 本機網址：[http://localhost/](http://localhost/)
 * 本機測試：[http://localhost/info.php](http://localhost/info.php)
