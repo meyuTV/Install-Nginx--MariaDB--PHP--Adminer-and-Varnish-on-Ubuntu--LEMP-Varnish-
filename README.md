@@ -26,7 +26,7 @@ sudo aptitude install python-software-properties &&
 sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db && 
 sudo add-apt-repository 'deb http://download.nus.edu.sg/mirror/mariadb/repo/5.5/ubuntu precise main' && 
 sudo aptitude update && 
-sudo aptitude install mariadb-server libapache2-mod-auth-mysql php5-mysql
+sudo apt-get install mariadb-server libapache2-mod-auth-mysql php5-mysql
 ```
 安裝過程中，請設定資料庫的最高權限使用者 root 的密碼 (本文使用 <code>root.password</code>)。
 接著，請進行安全性設定：
