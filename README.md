@@ -221,12 +221,17 @@ DONE.
 * Nginx：<code>/etc/nginx/sites-available/default</code> 及 <code>/etc/nginx/nginx.conf</code>
 * Varnish：<code>/etc/default/varnish</code> 及 <code>/etc/varnish/default.vcl</code>
 
-###基本資安補強  
+###補強  
 
 * 安全考量下，如您不需要透過網頁介面管理資料庫時，建議移除 Adminer：  
 ```bash
 sudo rm /usr/share/nginx/www/adminer.php
 ```
+* 如要測試 Varnish 運作情況，可使用以下指，並參考[此文](http://helpdesk.getpantheon.com/customer/portal/articles/425726)：
+```bash
+curl -I http://dev.pantheon.gotpantheon.com/
+```
+
 
 參考資源
 =
