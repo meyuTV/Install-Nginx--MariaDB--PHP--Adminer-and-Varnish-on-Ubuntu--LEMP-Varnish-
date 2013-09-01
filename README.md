@@ -227,7 +227,7 @@ DONE.
 ```bash
 sudo rm /usr/share/nginx/www/adminer.php
 ```
-* 如要測試 Varnish 運作情況，可使用以下指，並參考[此文](http://helpdesk.getpantheon.com/customer/portal/articles/425726)：
+* 如要測試 Varnish 運作情況，可使用以下指，並參考[此文](http://helpdesk.getpantheon.com/customer/portal/articles/425726)：  
 ```bash
 curl -I http://dev.pantheon.gotpantheon.com/
 ```
